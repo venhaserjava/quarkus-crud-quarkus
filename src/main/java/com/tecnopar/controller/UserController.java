@@ -30,7 +30,11 @@ public class UserController {
         var users = userService.findAll(page,pageSize);
         return Response.ok(users).build();
     }
-
+    @GET
+    @Path("/{id}")
+    public Response findById(@PathParam("id") Long id){
+        return Response.ok(userService.findById(id)).build();
+    }
     @POST
     @Transactional
    public Response create(UserEntity userEntity){

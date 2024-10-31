@@ -1,6 +1,7 @@
 package com.tecnopar.service;
 
 import com.tecnopar.entity.UserEntity;
+import com.tecnopar.exception.UserNotFoundException;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,5 +20,9 @@ public class UserService {
         return UserEntity.findAll()
                 .page(page,pageSize)
                 .list();
+    }
+    public UserEntity findById(Long id) {
+        return (UserEntity) UserEntity.findByIdOptional(id)
+                .orElseThrow(UserNotFoundException::new);
     }
 }
