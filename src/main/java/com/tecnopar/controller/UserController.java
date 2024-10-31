@@ -40,5 +40,11 @@ public class UserController {
    public Response create(UserEntity userEntity){
        return Response.ok(userService.create(userEntity)).build();
    }
+   @PUT
+   @Transactional
+   @Path("/{id}")
+   public Response update(@PathParam("id") Long id,  UserEntity userEntity){
+        return Response.ok(userService.update(id,userEntity)).build();
+   }
 
 }
