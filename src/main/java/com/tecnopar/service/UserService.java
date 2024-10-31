@@ -3,6 +3,7 @@ package com.tecnopar.service;
 import com.fasterxml.jackson.databind.util.BeanUtil;
 import com.tecnopar.entity.UserEntity;
 import com.tecnopar.exception.UserNotFoundException;
+import com.tecnopar.repository.UserRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,32 +12,64 @@ import java.util.List;
 
 @ApplicationScoped
 public class UserService {
-    private static final Logger log = LoggerFactory.getLogger(UserService.class);
+//    private static final Logger log = LoggerFactory.getLogger(UserService.class);
+    private  final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public UserEntity create(UserEntity userEntity) {
-        UserEntity.persist(userEntity);
-        return userEntity;
+//    Padrão Active Record
+//    UserEntity.persist(userEntity);
+
+//    Padrão Repository
+       userRepository.persist(userEntity);
+
+       return userEntity;
     }
     public List<UserEntity> findAll(Integer page, Integer pageSize){
-        return UserEntity.findAll()
-                .page(page,pageSize)
-                .list();
+
+//    Padrão Active Record
+//        return UserEntity.findAll()
+//                .page(page,pageSize)
+//                .list();
+
+//    Padrão Repository
+        return userRepository.findAll()
+            .page(page,pageSize)
+            .list();
     }
     public UserEntity findById(Long id) {
-        return (UserEntity) UserEntity.findByIdOptional(id)
+//    Padrão Active Record
+//        return (UserEntity) UserEntity.findByIdOptional(id)
+//                .orElseThrow(UserNotFoundException::new);
+
+//    Padrão Repository
+        return  (UserEntity) userRepository.findByIdOptional(id)
                 .orElseThrow(UserNotFoundException::new);
     }
     public UserEntity update(Long id, UserEntity userEntity){
+
         var user = findById(id);
-        user.name = userEntity.name;
-//        user.setName(userEntity.getName());
-        UserEntity.persist(user);
+//    Padrão Active Record
+//        user.name = userEntity.name;
+//        UserEntity.persist(user);
+
+//    Padrão Repository
+        user.setName(userEntity.getName());
+        userRepository.persist(user);
         return user;
 
     }
 
     public void delete(Long id) {
-        var user = findById(id);
-        UserEntity.deleteById(user.Id);
+//    Padrão Active Record
+//        var user = findById(id);
+//        UserEntity.deleteById(user.Id);
+
+//    Padrão Repository
+        var user =  findById(id);
+        userRepository.deleteById(id);
     }
 }
