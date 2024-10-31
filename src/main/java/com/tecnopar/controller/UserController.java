@@ -46,5 +46,12 @@ public class UserController {
    public Response update(@PathParam("id") Long id,  UserEntity userEntity){
         return Response.ok(userService.update(id,userEntity)).build();
    }
+   @DELETE
+   @Transactional
+   @Path("/{id}")
+   public Response delete(@PathParam("id") Long id){
+      userService.delete(id);
+      return  Response.noContent().build();
+   }
 
 }

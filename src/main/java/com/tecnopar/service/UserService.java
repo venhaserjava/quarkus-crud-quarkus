@@ -27,14 +27,16 @@ public class UserService {
                 .orElseThrow(UserNotFoundException::new);
     }
     public UserEntity update(Long id, UserEntity userEntity){
-//        var  userData =  (UserEntity) UserEntity.findByIdOptional(id)
-//                        .orElseThrow(UserNotFoundException::new);
-//        UserEntity.persist(userData);
         var user = findById(id);
         user.name = userEntity.name;
 //        user.setName(userEntity.getName());
         UserEntity.persist(user);
-        return  user;
+        return user;
 
+    }
+
+    public void delete(Long id) {
+        var user = findById(id);
+        UserEntity.deleteById(user.Id);
     }
 }
