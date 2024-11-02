@@ -69,7 +69,10 @@ public class UserService {
 //        UserEntity.deleteById(user.Id);
 
 //    Padrão Repository
-        var user =  findById(id);
         userRepository.deleteById(id);
+        if (findById(id).getId().equals(id)) {
+            userRepository.deleteById(id);
+            
+        }
     }
 }
